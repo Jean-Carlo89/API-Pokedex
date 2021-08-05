@@ -7,7 +7,8 @@ import{Request,Response,NextFunction} from 'express'
 
 import connectDatabase from "./database";
 
-import * as userController from "./controllers/userConroller";
+import * as userController from "./controllers/userController";
+import * as pokemonController from "./controllers/pokemonController"
 
 const app = express();
 app.use(cors());
@@ -19,6 +20,7 @@ export async function init () {
   await connectDatabase();
 }
 
+app.post("/insert", pokemonController.insert)
 app.use((err:any,req:Request,res:Response,next:NextFunction)=>{
   res.status(500).send('Erro desconhecido, tente mais tarde')
 })
