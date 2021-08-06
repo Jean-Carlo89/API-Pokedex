@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { valid } from "joi";
 
 import * as userService from "../services/userService";
 
@@ -22,18 +23,63 @@ interface NewUser{
 
 export async function SignUp (req: Request, res: Response) {
   try {
-    console.log(req.body)
+    
     const {email,password,confirmPassword} = req.body as NewUser
     
     const validate = await userService.validateNewUser({email,password,confirmPassword})
 
-    if(validate){
-      return res.sendStatus(201)
-    }
+    
+      //  if(validate===400){
+      //     return res.sendStatus(400)
+      //   }
+    
+      //   if(validate===409){
+      //     return res.sendStatus(409)
+      //   }
+    
+      //   if(validate===201){
+      //     return res.sendStatus(201)
+      //   }
+        
+      res.sendStatus(validate)
+    
  
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
   }
 }
+
+
+export async function Login (req: Request, res: Response) {
+  
+  res.send("enton")
+  // try {
+  //  // console.log(req.body)
+  //   const {email,password,confirmPassword} = req.body as NewUser
+    
+  //   const validate = await userService.validateNewUser({email,password,confirmPassword})
+
+  //   if(validate===400){
+  //     return res.sendStatus(400)
+  //   }
+
+  //   if(validate===409){
+  //     return res.sendStatus(409)
+  //   }
+
+  //   if(validate===201){
+  //     return res.sendStatus(201)
+  //   }
+    
+    
+
+    
+ 
+  // } catch (err) {
+  //   console.error(err);
+  //   res.sendStatus(500);
+  // }
+}
+
 

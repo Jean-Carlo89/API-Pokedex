@@ -16,6 +16,7 @@ app.use(express.json());
 
 app.get("/users", userController.getUsers);
 app.post("/sign-up", userController.SignUp)
+app.post("/sign-in", userController.Login)
 
 
 export async function init () {
@@ -26,6 +27,7 @@ app.post("/insert", pokemonController.insert)
 
 
 app.use((err:any,req:Request,res:Response,next:NextFunction)=>{
+  console.log(err)
   res.status(500).send('Erro desconhecido, tente mais tarde')
 })
 

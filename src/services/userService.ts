@@ -38,13 +38,21 @@ export async function validateNewUser(newUser:NewUser){
     )
 
      const validate = schema.validate(newUser)
-    const  hashedPassword = bcrypt.hashSync(password,12)
     
-
-     if(validate){
-       return await saveNewUser(email,hashedPassword)
+    
+    
+     const  hashedPassword = bcrypt.hashSync(password,12)
+    
+      
+    
+     if(validate.error){
+       
+       console.log('passou aqui')
+       console.log(validate.error)
+      return 400
      }else{
-       return false
+       
+       return await saveNewUser(email,hashedPassword)
      }
 
 
@@ -52,6 +60,16 @@ export async function validateNewUser(newUser:NewUser){
 
 async function saveNewUser(email:string,password:string) {
   const repository =  getRepository(User)
+  const alreadyExist = await repository.findOne({where:{email}})
+  
+  if(alreadyExist){
+    return 409
+  }
+    
   await repository.insert({email,password})
-  return true
+  
+ return 201
+  
+  
+   
 }
