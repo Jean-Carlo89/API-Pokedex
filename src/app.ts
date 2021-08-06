@@ -25,7 +25,9 @@ export async function init () {
 
 
 app.get("/pokemons",pokemonController.getPokemons)
-app.post("/insert", pokemonController.insert)  
+app.post("/insert", pokemonController.insert) 
+app.post("/populate", pokemonController.populatePokemons)
+
 
 
 app.use((err:any,req:Request,res:Response,next:NextFunction)=>{
