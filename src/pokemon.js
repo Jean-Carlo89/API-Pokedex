@@ -1,65 +1,12 @@
 import axios from 'axios'
+// import {getRepository} from "typeorm"
+// import Pokemon from '../src/entities/Pokemon'
 
 const api = 'https://pokeapi.co/api/v2/'
 
   let pokemons = [] 
 
   getPokemons()
-
-
-
-// async function getPokemons(){
- 
-//  try{
-//     await axios.get(`${api}pokemon/?offset=0&limit=2"`)
-    
-//    .then((res)=>{
-
-   
-//        res.data.results.forEach((item)=> {
-//             axios.get(`${item.url}`)
-//            .then((response)=>{
-              
-//               const r= response.data
-//                const pokemon={}
-              
-//                pokemon["id"]=r.id
-//                pokemon["name"]=r.forms[0].name
-//                pokemon["image"]=r.sprites.front_default
-//                pokemon["weight"]=r.weight
-//                pokemon["height"]=r.height
-//                pokemon["baseExp"]=r.base_experience
-               
-               
-
-//                 axios.get(`https://pokeapi.co/api/v2/characteristic/${r.id}/`)  
-//                .then((res)=>{
-                   
-//                    pokemon["description"]=res.data.descriptions[2].description
-                   
-//                    pokemons.push(pokemon)
-
-//                })
-               
-            
-            
-   
-//            })
-           
-//        });
-       
-       
-//    })
-   
-//    console.log(pokemons)
-//    return pokemons
-
-//  }catch(err){
-//     console.log(err)
-// }
-
-    
-// }
 
 
 
@@ -85,8 +32,8 @@ async function getPokemons(){
    }
 
    async function array2(params) {
-       console.log('params')
-       console.log(params.data.results)
+    //    console.log('params')
+    //    console.log(params.data.results)
 
       const pokeInfo= await Promise.all(
         params.data.results.map(async (item)=>{
@@ -104,6 +51,7 @@ async function getPokemons(){
         
             pokemon["id"]=item.data.id
             pokemon["name"]=item.data.name
+            pokemon["number"]=item.data.id
             pokemon["image"]=item.data.sprites.front_default
             pokemon["weight"]=item.data.weight
             pokemon["height"]=item.data.height
@@ -125,17 +73,37 @@ async function getPokemons(){
         )
 
         descriptions.forEach((item,index)=>{
-            console.log(item.data.descriptions[item.data.descriptions.length-1])
+           // console.log(item.data.descriptions[item.data.descriptions.length-1])
 
             pokemons[`${index}`]["description"]=item.data.descriptions[item.data.descriptions.length-1].description
         })
 
-       console.log(pokemons)
+       
         
         
-
+            insertPokemons(pokemons)
       
    }
    
    
 
+async function insertPokemons(pokemons) {
+     
+//    await Promise.all(
+//         pokemons.forEach(async (item)=>{
+//             getRepository(Pokemon).insert({})
+//        })
+//     )
+console.log(' asaasasass')
+    console.log(pokemons)
+
+    // for(let i=0;i<pokemons.length; i++){
+
+    //     await getRepository(Pokemon).insert(pokemons[i])
+    //    }
+    axios.post("http://localhost:4000/insert",pokemons)
+
+
+    
+    
+}
