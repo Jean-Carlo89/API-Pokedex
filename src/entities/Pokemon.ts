@@ -1,6 +1,6 @@
-import {Entity,PrimaryGeneratedColumn,Column,ManyToOne} from "typeorm"
+import {Entity,PrimaryGeneratedColumn,Column,OneToMany} from "typeorm"
 import User from "./User";
-
+import PokemonUser from './pokemonsUsers'
 
 @Entity("pokemons")
 export default class Pokemon{
@@ -27,9 +27,6 @@ export default class Pokemon{
     @Column()
     baseExp:number;
 
-    // @ManyToOne(()=>User,(user)=>user.pokemons)
-    // user:User
-
-
-
+    @OneToMany(()=>PokemonUser, pokemonUser=>pokemonUser.pokemon)
+    pokemonsUsers:PokemonUser[]
 }
