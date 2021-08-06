@@ -1,3 +1,4 @@
+import { any, string } from "joi";
 import supertest from "supertest";
 import { getConnection, getRepository } from "typeorm";
 
@@ -18,7 +19,7 @@ afterAll(async () => {
   await getConnection().close();
 });
 
-
+const agent = supertest(app)
 
 describe("GET /users", () => {
   it("should answer with text \"OK!\" and status 200", async () => {
@@ -87,7 +88,7 @@ describe("POST /sign-up",()=>{
      confirmPassword:"12345"
    }
 
-    console.log(newUser)
+  
 
     const create= await supertest(app).post("/sign-up").send(newUser);
     
@@ -98,3 +99,56 @@ describe("POST /sign-up",()=>{
 })
 
 
+
+describe("POST / sign-in", ()=>{
+  it("should return 400 if invalid email", async()=>{
+    const user={
+      email:"email.email.com",
+      password:"123456"
+    }
+     const response = await agent.post("/sign-in").send(user)
+
+    expect(response.status).toBe(400)
+  })
+
+
+  it("should return 401 if wrong email", async()=>{
+   const user = await createUser()
+    
+    const testUser={
+      email:`shiza${user.email}`,
+      password:user.password
+    }
+     const response = await agent.post("/sign-in").send(testUser)
+
+    expect(response.status).toBe(401)
+  })
+
+  it("should return 401 if wrong password", async()=>{
+    const user = await createUser()
+     
+     const testUser={
+       email:user.email,
+       password:`${user.password}asdfsdf`
+     }
+      const response = await agent.post("/sign-in").send(testUser)
+ 
+     expect(response.status).toBe(401)
+   })
+
+  //  it("should return 200 all correct", async()=>{
+  //   const user = await createUser()
+     
+  //    const testUser={
+  //      email:user.email,
+  //      password:user.password
+  //    }
+
+     
+  //     const response = await agent.post("/sign-in").send({email:user.email,password:user.password})
+ 
+     
+  //     expect(response.status).toBe(200)
+     
+  //  })
+})

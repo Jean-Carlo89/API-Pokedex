@@ -51,35 +51,37 @@ export async function SignUp (req: Request, res: Response) {
 }
 
 
+
+
 export async function Login (req: Request, res: Response) {
   
-  res.send("enton")
-  // try {
-  //  // console.log(req.body)
-  //   const {email,password,confirmPassword} = req.body as NewUser
+  
+  try {
+   // console.log(req.body)
+    const email:string = req.body.email
+    const password:string =req.body.password
     
-  //   const validate = await userService.validateNewUser({email,password,confirmPassword})
+    const validate = await userService.validateLogin(email,password)
 
-  //   if(validate===400){
-  //     return res.sendStatus(400)
-  //   }
+    if(typeof(validate)==='string'){
+      res.send(validate)
+    }else{
+      res.sendStatus(validate)
+    }
+    
+   
 
-  //   if(validate===409){
-  //     return res.sendStatus(409)
-  //   }
 
-  //   if(validate===201){
-  //     return res.sendStatus(201)
-  //   }
+   
     
     
 
     
  
-  // } catch (err) {
-  //   console.error(err);
-  //   res.sendStatus(500);
-  // }
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
 }
 
 

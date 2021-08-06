@@ -2,10 +2,13 @@ import { Request, Response } from "express";
 import { getRepository, Repository } from "typeorm";
 import joi from 'joi'
 import  bcrypt from "bcrypt";
+import { v4 as uuid } from 'uuid';
 
 
 import User from "../entities/User";
+import Session from "../entities/Session"
 import Joi from "joi";
+import { Login } from "../controllers/userController";
 
 
 
@@ -46,9 +49,6 @@ export async function validateNewUser(newUser:NewUser){
       
     
      if(validate.error){
-       
-       console.log('passou aqui')
-       console.log(validate.error)
       return 400
      }else{
        
@@ -72,4 +72,53 @@ async function saveNewUser(email:string,password:string) {
   
   
    
+}
+
+export async function validateLogin(email:string,password:string) {
+  const newUser ={
+    email,
+    password
+  }
+  
+  let schema=Joi.object(
+    {
+      email:Joi.string().required().email(),
+      password:Joi.string().min(3).required()
+      
+    }
+  )
+
+   const validate = schema.validate(newUser)
+  
+  
+   if(validate.error){
+      
+    return 400
+  }
+
+  return await login(email,password)
+   
+}
+
+async function login(email:string,password:string){
+  //const repository =  getRepository(User)
+  const user = await getRepository(User).findOne({email})
+
+  if(!user){
+    console.log('primeiro')
+    return 401
+  }
+  
+  if(bcrypt.compareSync(password,user.password)){
+    const token = uuid()
+
+    await getRepository(Session).insert({userId:user.id,token})
+    return token
+
+  }else{
+    console.log('segundo')
+    return 401
+  }
+  
+  
 }
