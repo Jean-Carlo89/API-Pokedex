@@ -27,6 +27,11 @@ export default class Pokemon{
     @Column()
     baseExp:number;
 
+    @Column('boolean', {default: false})
+    inMyPokemons: boolean;
+
     @OneToMany(()=>PokemonUser, pokemonUser=>pokemonUser.pokemon)
     pokemonsUsers:PokemonUser[]
+
+   
 }

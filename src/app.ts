@@ -23,7 +23,9 @@ export async function init () {
   await connectDatabase();
 }
 
-app.post("/insert", pokemonController.insert)
+
+app.get("/pokemons",pokemonController.getPokemons)
+app.post("/insert", pokemonController.insert)  
 
 
 app.use((err:any,req:Request,res:Response,next:NextFunction)=>{
