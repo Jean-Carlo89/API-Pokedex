@@ -10,5 +10,6 @@ export async function createUser () {
 
   await getRepository(User).save(user);
 
+  
   return user;
 }
