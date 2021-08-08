@@ -1,5 +1,7 @@
 import {getRepository} from "typeorm"
 import Pokemon from '../entities/Pokemon'
+import PokemonUser from '../entities/pokemonsUsers'
+
 interface newPokemon{
     
     id:number;
@@ -41,14 +43,44 @@ export async function insert(pokemons:newPokemon[]) {
     
 }
 
+interface MyPokemonsObject {
+    [key: string]: any
+}
 
 export async function getPokemons() {
 
-   const pokemons = getRepository(Pokemon).find()
+    const id =157
+   const pokemons = await getRepository(Pokemon).find()
 
-   return pokemons
+   const myPokemons = await getRepository(PokemonUser).find({where:{userId:id},relations:["pokemon"]})
+
+   console.log(myPokemons)
+
+   const myPokemonsObject: MyPokemonsObject= {}
+
+   myPokemons.forEach((item)=>{
+    myPokemonsObject[`${item.pokemon.number}`] = true
+   })
+    
+   console.log(myPokemonsObject)
+
+   const newPokemons = pokemons.map((pokemon)=>{
+        if(myPokemonsObject[`${pokemon.number}`]===true){
+            
+            return(
+                {...pokemon,inMyPokemons:true}
+            )
+        }
+
+        return {...pokemon,inMyPokemons:false}
+   })
+   
+   return newPokemons
     
    
 
     
 }
+
+
+

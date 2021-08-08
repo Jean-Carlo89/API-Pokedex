@@ -24,6 +24,8 @@ export async function getPokemons(req: Request, res: Response){
     
     
      const pokemons = await pokemonService.getPokemons()
+
+     
  
      res.send(pokemons)
  
@@ -36,6 +38,7 @@ export async function getPokemons(req: Request, res: Response){
 
  export async function populatePokemons(req: Request, res: Response){
     const {password} = req.body as {password: string};
+    console.log('populando')
    
     for(let i = 1; i < 899; i ++){
         const result = await axios.get(`https://pokeapi.co/api/v2/pokemon/${i}`)
