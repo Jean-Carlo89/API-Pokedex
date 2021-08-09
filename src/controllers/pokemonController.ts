@@ -21,8 +21,9 @@ export async function insert(req: Request, res: Response){
 export async function getPokemons(req: Request, res: Response){
     console.log('bateu aqui')
     console.log(req.body)
+   
     
-    
+    return
      const pokemons = await pokemonService.getPokemons()
 
      
@@ -64,3 +65,34 @@ export async function getPokemons(req: Request, res: Response){
 
 
  
+
+
+export async function removePokemon(req: Request, res: Response){
+   console.log(req.headers)
+   console.log(req.params)
+   const id = Number(req.params.id)
+
+  const deletionResult= await pokemonService.removePokemon(id)
+
+  if(deletionResult===200){
+     return res.sendStatus(200)
+  }
+   
+    
+    
+ }
+
+ export async function addPokemon(req: Request, res: Response){
+    console.log(req.headers)
+    console.log(req.params)
+    const id = Number(req.params.id)
+ 
+   const deletionResult= await pokemonService.addPokemon(id)
+ 
+   if(deletionResult===200){
+      return res.sendStatus(200)
+   }
+    
+     
+     
+  }

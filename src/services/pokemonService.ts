@@ -54,7 +54,7 @@ export async function getPokemons() {
 
    const myPokemons = await getRepository(PokemonUser).find({where:{userId:id},relations:["pokemon"]})
 
-   console.log(myPokemons)
+   //console.log(myPokemons)
 
    const myPokemonsObject: MyPokemonsObject= {}
 
@@ -62,7 +62,7 @@ export async function getPokemons() {
     myPokemonsObject[`${item.pokemon.number}`] = true
    })
     
-   console.log(myPokemonsObject)
+   //console.log(myPokemonsObject)
 
    const newPokemons = pokemons.map((pokemon)=>{
         if(myPokemonsObject[`${pokemon.number}`]===true){
@@ -81,6 +81,21 @@ export async function getPokemons() {
 
     
 }
+
+export async function removePokemon(id:number){
+   
+   
+    await getRepository(PokemonUser).delete({pokemonId:id})
+
+    return 200
+}
+
+export async function addPokemon(id:number){
+    await getRepository(PokemonUser).delete({pokemonId:id})
+
+    return 200
+}
+
 
 
 

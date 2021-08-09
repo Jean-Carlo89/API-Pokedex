@@ -122,3 +122,13 @@ async function login(email:string,password:string){
   
   
 }
+
+export async function authenticate(token:string){
+  const session = await getRepository(Session).findOne({where:{token},relations:["user"]})
+
+  if(!session){
+    return null
+  }else{
+    return session.user
+  }
+}
