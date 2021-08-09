@@ -8,10 +8,12 @@ export async function authenticateMiddleware(req:Request,res:Response,next:NextF
     const token = header.split("Bearer ")[1]
    console.log(token)
   
-   const validSession = await userService.authenticate(token)
+   const user = await userService.authenticate(token)
     
-   if(!validSession){
+   if(user===null){
     return res.sendStatus(401)
    }
+
+   res.locals.user=user
     next()
   }

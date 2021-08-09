@@ -3,6 +3,7 @@ import axios from 'axios'
 import * as pokemonService from '../services/pokemonService'
 import {getRepository} from "typeorm"
 import Pokemon from '../entities/Pokemon'
+import User from "../entities/User";
 
 
 export async function insert(req: Request, res: Response){
@@ -22,9 +23,10 @@ export async function getPokemons(req: Request, res: Response){
     console.log('bateu aqui')
     console.log(req.body)
    
+    const user = res.locals.user
+    console.log(user)
     
-    return
-     const pokemons = await pokemonService.getPokemons()
+     const pokemons = await pokemonService.getPokemons(user.id)
 
      
  
@@ -70,9 +72,13 @@ export async function getPokemons(req: Request, res: Response){
 export async function removePokemon(req: Request, res: Response){
    console.log(req.headers)
    console.log(req.params)
-   const id = Number(req.params.id)
+   const pokemonId = Number(req.params.id)
 
-  const deletionResult= await pokemonService.removePokemon(id)
+   const userId = res.locals.user.id
+    console.log(pokemonId)
+    console.log(userId)
+    
+  const deletionResult= await pokemonService.removePokemon(pokemonId,userId)
 
   if(deletionResult===200){
      return res.sendStatus(200)
@@ -84,12 +90,16 @@ export async function removePokemon(req: Request, res: Response){
 
  export async function addPokemon(req: Request, res: Response){
     console.log(req.headers)
-    console.log(req.params)
-    const id = Number(req.params.id)
+   console.log(req.params)
+   const pokemonId = Number(req.params.id)
+
+   const userId = res.locals.user.id
+    console.log(pokemonId)
+    console.log(userId)
  
-   const deletionResult= await pokemonService.addPokemon(id)
+   const addResult= await pokemonService.addPokemon(pokemonId,userId)
  
-   if(deletionResult===200){
+   if(addResult===200){
       return res.sendStatus(200)
    }
     

@@ -29,8 +29,8 @@ export async function init () {
 
 
 app.get("/pokemons",authenticateMiddleware,pokemonController.getPokemons)
-app.post("/my-pokemons/:id/remove",pokemonController.removePokemon)
-app.post("/my-pokemons/:id/add",pokemonController.addPokemon),
+app.post("/my-pokemons/:id/remove",authenticateMiddleware,pokemonController.removePokemon)
+app.post("/my-pokemons/:id/add",authenticateMiddleware,pokemonController.addPokemon),
 app.post("/insert", pokemonController.insert) 
 app.post("/populate", pokemonController.populatePokemons)
 

@@ -47,12 +47,12 @@ interface MyPokemonsObject {
     [key: string]: any
 }
 
-export async function getPokemons() {
+export async function getPokemons(userId:number) {
 
-    const id =157
+    //const id =157
    const pokemons = await getRepository(Pokemon).find()
 
-   const myPokemons = await getRepository(PokemonUser).find({where:{userId:id},relations:["pokemon"]})
+   const myPokemons = await getRepository(PokemonUser).find({where:{userId},relations:["pokemon"]})
 
    //console.log(myPokemons)
 
@@ -82,16 +82,19 @@ export async function getPokemons() {
     
 }
 
-export async function removePokemon(id:number){
+export async function removePokemon(pokemonId:number,userId:number){
    
-   
-    await getRepository(PokemonUser).delete({pokemonId:id})
-
+   const relation = await getRepository(PokemonUser).findOne({where:{userId,pokemonId}})
+    console.log(relation)
+   await getRepository(PokemonUser).delete({id:relation.id})
+    
     return 200
 }
 
-export async function addPokemon(id:number){
-    await getRepository(PokemonUser).delete({pokemonId:id})
+export async function addPokemon(pokemonId:number,userId:number){
+   
+    await getRepository(PokemonUser).insert({userId,pokemonId})
+    
 
     return 200
 }
