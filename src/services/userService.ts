@@ -96,8 +96,9 @@ export async function validateLogin(email:string,password:string) {
     return 400
   }
 
-  return await login(email,password)
+  const token = await login(email,password)
    
+  return token
 }
 
 async function login(email:string,password:string){

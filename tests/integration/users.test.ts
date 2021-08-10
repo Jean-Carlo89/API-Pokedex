@@ -136,19 +136,5 @@ describe("POST / sign-in", ()=>{
      expect(response.status).toBe(401)
    })
 
-  //  it("should return 200 all correct", async()=>{
-  //   const user = await createUser()
-     
-  //    const testUser={
-  //      email:user.email,
-  //      password:user.password
-  //    }
-
-     
-  //     const response = await agent.post("/sign-in").send({email:user.email,password:user.password})
  
-     
-  //     expect(response.status).toBe(200)
-     
-  //  })
 })

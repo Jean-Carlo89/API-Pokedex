@@ -14,9 +14,9 @@ export default class User {
   @Column()
   password: string;
 
-  @OneToMany(()=>PokemonUser, (pokemonUser)=>pokemonUser.user)
+  @OneToMany(()=>PokemonUser, (pokemonUser)=>pokemonUser.user,{onDelete: "CASCADE"})
   pokemonsUsers:PokemonUser[]
 
-  @OneToMany(()=>Session, (sessions)=>sessions.user)
+  @OneToMany(()=>Session, (sessions)=>sessions.user,{onDelete: "CASCADE"})
   sessions:Session[]
 }
