@@ -30,12 +30,16 @@ describe("GET /pokemons", () => {
         console.log(user)
        const newSession =  await getRepository(Session).insert({userId:user.id,token:'tokentest'})
        console.log(newSession)
+       console.log(newSession.generatedMaps[0].id)
+        const id =newSession.generatedMaps[0].id
 
-
-
+       const result= await supertest(app).get("/pokemons").set('Authorization','Bearer asdasdasd' )
       
-    
-     
+      expect(result.status).toBe(401)
+       
+      await getRepository(Session).delete({id:id})
+      
+
     });
   });
   
