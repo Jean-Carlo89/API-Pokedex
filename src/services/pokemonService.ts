@@ -48,22 +48,14 @@ interface MyPokemonsObject {
 }
 
 export async function getPokemons(userId:number) {
-
-    //const id =157
    const pokemons = await getRepository(Pokemon).find()
-
    const myPokemons = await getRepository(PokemonUser).find({where:{userId},relations:["pokemon"]})
-
-   //console.log(myPokemons)
-
    const myPokemonsObject: MyPokemonsObject= {}
 
    myPokemons.forEach((item)=>{
     myPokemonsObject[`${item.pokemon.number}`] = true
    })
     
-   //console.log(myPokemonsObject)
-
    const newPokemons = pokemons.map((pokemon)=>{
         if(myPokemonsObject[`${pokemon.number}`]===true){
             
@@ -76,26 +68,16 @@ export async function getPokemons(userId:number) {
    })
    
    return newPokemons
-    
-   
-
-    
 }
 
 export async function removePokemon(pokemonId:number,userId:number){
-   
    const relation = await getRepository(PokemonUser).findOne({where:{userId,pokemonId}})
-    console.log(relation)
    await getRepository(PokemonUser).delete({id:relation.id})
-    
     return 200
 }
 
 export async function addPokemon(pokemonId:number,userId:number){
-   
     await getRepository(PokemonUser).insert({userId,pokemonId})
-    
-
     return 200
 }
 

@@ -54,7 +54,7 @@ describe("GET /pokemons", () => {
             weight: expect.any(Number),
             height: expect.any(Number),
             baseExp: expect.any(Number),
-           //description: expect.any(String),
+           description: expect.any(String),
             inMyPokemons:expect.any(Boolean)
           })
         ])
@@ -84,8 +84,6 @@ describe("GET /pokemons", () => {
       await getRepository(Session).delete({id:create.id})
 
        const relation = await getRepository(PokemonUser).findOne({where:{pokemonId}})
-       console.log(relation)
-
        await getRepository(PokemonUser).delete({id:relation.id})
     })
   })
@@ -103,8 +101,6 @@ describe("GET /pokemons", () => {
       const create = await createToken()
       const pokemonId = await populatePokemons(1)
       await getRepository(PokemonUser).insert({userId:create.user.id,pokemonId})
-     
-     
        const result= await supertest(app).post(`/my-pokemons/${pokemonId}/remove`).set('Authorization',`Bearer ${create.token}` )
        expect(result.status).toBe(200)
        await getRepository(Session).delete({id:create.id})

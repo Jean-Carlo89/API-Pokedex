@@ -13,7 +13,7 @@ export async function populatePokemons(qty:number){
         pokemon.weight = faker.datatype.number();
         pokemon.height = faker.datatype.number();
         pokemon.baseExp = faker.datatype.number();
-        //pokemon.description = faker.lorem.paragraph();
+        pokemon.description = faker.lorem.paragraph();
         pokemons.push(pokemon)
     }
    const newPokemon=  await getRepository(Pokemon).insert(pokemons)

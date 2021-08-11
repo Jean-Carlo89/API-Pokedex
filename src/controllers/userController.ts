@@ -27,20 +27,6 @@ export async function SignUp (req: Request, res: Response) {
     const {email,password,confirmPassword} = req.body as NewUser
     
     const validate = await userService.validateNewUser({email,password,confirmPassword})
-
-    
-      //  if(validate===400){
-      //     return res.sendStatus(400)
-      //   }
-    
-      //   if(validate===409){
-      //     return res.sendStatus(409)
-      //   }
-    
-      //   if(validate===201){
-      //     return res.sendStatus(201)
-      //   }
-        
       res.sendStatus(validate)
     
  
@@ -55,9 +41,9 @@ export async function SignUp (req: Request, res: Response) {
 
 export async function Login (req: Request, res: Response) {
   
-  
+   
   try {
-   // console.log(req.body)
+   
     const email:string = req.body.email
     const password:string =req.body.password
     
@@ -69,15 +55,6 @@ export async function Login (req: Request, res: Response) {
       res.sendStatus(validate)
     }
     
-   
-
-
-   
-    
-    
-
-    
- 
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
