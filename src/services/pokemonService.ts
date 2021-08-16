@@ -1,5 +1,7 @@
 import {getRepository} from "typeorm"
 import Pokemon from '../entities/Pokemon'
+import PokemonUser from '../entities/pokemonsUsers'
+
 interface newPokemon{
     
     id:number;
@@ -41,14 +43,44 @@ export async function insert(pokemons:newPokemon[]) {
     
 }
 
-
-export async function getPokemons() {
-
-   const pokemons = getRepository(Pokemon).find()
-
-   return pokemons
-    
-   
-
-    
+interface MyPokemonsObject {
+    [key: string]: any
 }
+
+export async function getPokemons(userId:number) {
+   const pokemons = await getRepository(Pokemon).find()
+   const myPokemons = await getRepository(PokemonUser).find({where:{userId},relations:["pokemon"]})
+   const myPokemonsObject: MyPokemonsObject= {}
+
+   myPokemons.forEach((item)=>{
+    myPokemonsObject[`${item.pokemon.number}`] = true
+   })
+    
+   const newPokemons = pokemons.map((pokemon)=>{
+        if(myPokemonsObject[`${pokemon.number}`]===true){
+            
+            return(
+                {...pokemon,inMyPokemons:true}
+            )
+        }
+
+        return {...pokemon,inMyPokemons:false}
+   })
+   
+   return newPokemons
+}
+
+export async function removePokemon(pokemonId:number,userId:number){
+   const relation = await getRepository(PokemonUser).findOne({where:{userId,pokemonId}})
+   await getRepository(PokemonUser).delete({id:relation.id})
+    return 200
+}
+
+export async function addPokemon(pokemonId:number,userId:number){
+    await getRepository(PokemonUser).insert({userId,pokemonId})
+    return 200
+}
+
+
+
+

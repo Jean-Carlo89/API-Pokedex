@@ -14,7 +14,7 @@ export default class Session{
     userId:number
     
 
-    @ManyToOne(()=>User,(user)=>user.sessions)
+    @ManyToOne(()=>User,(user)=>user.sessions,{onDelete: "CASCADE"})
     user:User
 
     

@@ -27,10 +27,10 @@ export default class Pokemon{
     @Column()
     baseExp:number;
 
-    @Column('boolean', {default: false})
-    inMyPokemons: boolean;
+    @Column()
+    description:string
 
-    @OneToMany(()=>PokemonUser, pokemonUser=>pokemonUser.pokemon)
+    @OneToMany(()=>PokemonUser, pokemonUser=>pokemonUser.pokemon,{onDelete: "CASCADE"})
     pokemonsUsers:PokemonUser[]
 
    

@@ -10,8 +10,6 @@ import Session from "../entities/Session"
 import Joi from "joi";
 import { Login } from "../controllers/userController";
 
-
-
 export async function getUsers () {
   const repository =  getRepository(User)
   const users = await repository.find({
@@ -20,9 +18,6 @@ export async function getUsers () {
   
   return users;
 }
-
-
-
 
 interface NewUser{
   email:string,
@@ -96,16 +91,16 @@ export async function validateLogin(email:string,password:string) {
     return 400
   }
 
-  return await login(email,password)
+  const token = await login(email,password)
    
+  return token
 }
 
 async function login(email:string,password:string){
-  //const repository =  getRepository(User)
+  
   const user = await getRepository(User).findOne({email})
 
   if(!user){
-    console.log('primeiro')
     return 401
   }
   
@@ -116,9 +111,18 @@ async function login(email:string,password:string){
     return token
 
   }else{
-    console.log('segundo')
     return 401
   }
   
   
+}
+
+export async function authenticate(token:string){
+  const session = await getRepository(Session).findOne({where:{token},relations:["user"]})
+
+  if(!session){
+    return null
+  }else{
+    return session.user
+  }
 }

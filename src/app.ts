@@ -8,7 +8,11 @@ import{Request,Response,NextFunction} from 'express'
 import connectDatabase from "./database";
 
 import * as userController from "./controllers/userController";
+
 import * as pokemonController from "./controllers/pokemonController"
+import { func } from "joi";
+
+import {authenticateMiddleware} from './middlewares/authenticateMiddleware'
 
 const app = express();
 app.use(cors());
@@ -24,8 +28,10 @@ export async function init () {
 }
 
 
-app.get("/pokemons",pokemonController.getPokemons)
-app.post("/insert", pokemonController.insert) 
+app.get("/pokemons",authenticateMiddleware,pokemonController.getPokemons)
+app.post("/my-pokemons/:id/remove",authenticateMiddleware,pokemonController.removePokemon)
+app.post("/my-pokemons/:id/add",authenticateMiddleware,pokemonController.addPokemon),
+
 app.post("/populate", pokemonController.populatePokemons)
 
 
