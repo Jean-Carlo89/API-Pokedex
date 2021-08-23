@@ -29,3 +29,21 @@ The following tools and frameworks were used in the construction of the project:
   <img style='margin: 5px;' src="https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white"/>
 </p>
 
+## How to run
+
+1. Clone this repository
+2. create a postgres Database named pokedex
+3. create a .env like .env.example with your database values
+4. Install dependencies
+```
+npm i
+```
+5. To create and run migrations for your database:
+```
+npm run build
+```
+6.start server with:
+```
+npm run dev
+```
+
