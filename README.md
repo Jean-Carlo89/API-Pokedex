@@ -46,4 +46,5 @@ npm run build
 ```
 npm run dev
 ```
+7.Access http://localhost:4000/route (replace route for the route you wanna call) on postman
 
